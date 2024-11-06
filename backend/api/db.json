@@ -1,0 +1,49 @@
+{
+    "linguas": [
+      {
+        "id": 1,
+        "nome": "Inglês",
+        "descricao": "Idioma falado em países como os Estados Unidos, Reino Unido, Canadá, entre outros."
+      },
+      {
+        "id": 2,
+        "nome": "Espanhol",
+        "descricao": "Idioma falado principalmente na Espanha e na América Latina."
+      },
+      {
+        "id": 3,
+        "nome": "Francês",
+        "descricao": "Idioma falado na França e em outras regiões do mundo como Canadá, Bélgica, Suíça, etc."
+      }
+    ],
+    "users": [
+      {
+        "id": 1,
+        "username": "João",
+        "linguas": [
+          {
+            "id": 1,
+            "nome": "Inglês",
+            "descricao": "Idioma falado em países como os Estados Unidos, Reino Unido, Canadá, entre outros."
+          },
+          {
+            "id": 2,
+            "nome": "Espanhol",
+            "descricao": "Idioma falado principalmente na Espanha e na América Latina."
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "username": "Maria",
+        "linguas": [
+          {
+            "id": 3,
+            "nome": "Francês",
+            "description": "Idioma falado na França e em outras regiões do mundo como Canadá, Bélgica, Suíça, etc."
+          }
+        ]
+      }
+    ]
+  }
+  
