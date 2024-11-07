@@ -1,23 +1,13 @@
 class Language {
   final int id;
-  final String nome;
-  final String descricao;
+  final String name;
 
-  Language({required this.id, required this.nome, required this.descricao});
+  Language({required this.id, required this.name});
 
   factory Language.fromJson(Map<String, dynamic> json) {
     return Language(
       id: json['id'],
-      nome: json['nome'],
-      descricao: json['descrição'],
+      name: json['name'],
     );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'nome': nome,
-      'descrição': descricao,
-    };
   }
 }

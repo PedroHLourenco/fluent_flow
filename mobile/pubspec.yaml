@@ -37,6 +37,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   http: ^1.2.2
   mocktail: ^1.0.4
+  test: ^1.25.7
 
 dev_dependencies:
   flutter_test:

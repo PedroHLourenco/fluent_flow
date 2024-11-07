@@ -1,56 +1,67 @@
 import 'package:flutter/material.dart';
-import 'form_screen.dart';
 import '../models/language.dart';
 import '../services/api_service.dart';
-import '../components/language_card.dart';
 
-class ListScreen extends StatefulWidget {
-  @override
-  _ListScreenState createState() => _ListScreenState();
-}
+class ListScreen extends StatelessWidget {
+  final String type;
 
-class _ListScreenState extends State<ListScreen> {
-  late Future<List<Language>> linguas;
-
-  @override
-  void initState() {
-    super.initState();
-    linguas = ApiService().getLinguas();
-  }
+  const ListScreen({super.key, required this.type});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Idiomas Disponíveis")),
-      body: FutureBuilder<List<Language>>(
-        future: linguas,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return const Center(child: Text("Erro ao carregar idiomas"));
-          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text("Nenhum idioma disponível"));
-          }
-
-          final linguas = snapshot.data!;
-
-          return ListView.builder(
-            itemCount: linguas.length,
-            itemBuilder: (context, index) {
-              return LanguageCard(lingua: linguas[index]);
-            },
-          );
-        },
+      appBar: AppBar(
+        title: Text(type == 'languages' ? 'Idiomas' : 'Lições'),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => FormScreen()),
-          );
-        },
-        child: const Icon(Icons.add),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: FutureBuilder<List<dynamic>>(
+          future: type == 'languages' ? ApiService().fetchLanguages() : ApiService().fetchLessons(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            }
+
+            if (snapshot.hasError) {
+              return Center(child: Text('Erro: ${snapshot.error}'));
+            }
+
+            final items = snapshot.data ?? [];
+
+            return ListView.builder(
+              itemCount: items.length,
+              itemBuilder: (context, index) {
+                if (type == 'languages') {
+                  final language = items[index] as Language;
+                  return Card(
+                    margin: const EdgeInsets.symmetric(vertical: 8),
+                    elevation: 4,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    child: ListTile(
+                      contentPadding: const EdgeInsets.all(16),
+                      title: Text(language.name, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                      leading: const Icon(Icons.language, color: Colors.indigo),
+                      onTap: () {},
+                    ),
+                  );
+                } else {
+                  final lesson = items[index];
+                  return Card(
+                    margin: const EdgeInsets.symmetric(vertical: 8),
+                    elevation: 4,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    child: ListTile(
+                      contentPadding: const EdgeInsets.all(16),
+                      title: Text(lesson.title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                      leading: const Icon(Icons.book, color: Colors.blueAccent),
+                      onTap: () {},
+                    ),
+                  );
+                }
+              },
+            );
+          },
+        ),
       ),
     );
   }
