@@ -1,95 +1,85 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/services/api_service.dart';
-import 'package:mobile/models/language.dart';
+import '../models/language.dart';
+import '../models/lesson.dart';
+import '../services/api_service.dart';
 
 class FormScreen extends StatefulWidget {
+  final String type;
+
+  const FormScreen({super.key, required this.type});
+
   @override
   _FormScreenState createState() => _FormScreenState();
 }
 
 class _FormScreenState extends State<FormScreen> {
-  final _controller = TextEditingController();
-  int _selectedLanguage = 0;
-  bool _isLoading = false;
-  List<Language> _languages = [];
-
-  @override
-  void initState() {
-    super.initState();
-    _loadLanguages();
-  }
-
-  Future<void> _loadLanguages() async {
-    try {
-      final languages = await ApiService().getLanguages();
-      setState(() {
-        _languages = languages;
-      });
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Erro ao carregar idiomas')));
-    }
-  }
-
-  Future<void> _addLesson() async {
-    final title = _controller.text;
-    if (title.isEmpty || _selectedLanguage == 0) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Preencha todos os campos')));
-      return;
-    }
-
-    setState(() {
-      _isLoading = true;
-    });
-
-    try {
-      await ApiService().addLesson(title, _selectedLanguage);
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Lição Adicionada')));
-      Navigator.pop(context);
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Erro ao adicionar lição')));
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
-    }
-  }
+  final _formKey = GlobalKey<FormState>();
+  late String _name;
+  late String _title;
+  late int _languageId;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Adicionar Lição')),
+      appBar: AppBar(
+        title: Text(widget.type == 'languages' ? 'Adicionar Idioma' : 'Adicionar Lição'),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            TextField(
-              controller: _controller,
-              decoration: InputDecoration(labelText: 'Título da Lição'),
-            ),
-            DropdownButton<int>(
-              isExpanded: true,
-              value: _selectedLanguage == 0 ? null : _selectedLanguage,
-              onChanged: (int? newValue) {
-                setState(() {
-                  _selectedLanguage = newValue!;
-                });
-              },
-              items: _languages
-                  .map((Language language) => DropdownMenuItem<int>(
-                        value: language.id,
-                        child: Text(language.name),
-                      ))
-                  .toList(),
-            ),
-            SizedBox(height: 20),
-            _isLoading
-                ? Center(child: CircularProgressIndicator())
-                : ElevatedButton(
-                    onPressed: _addLesson,
-                    child: Text('Adicionar Lição'),
-                  ),
-          ],
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TextFormField(
+                decoration: InputDecoration(labelText: widget.type == 'languages' ? 'Nome do Idioma' : 'Título da Lição'),
+                onChanged: (value) {
+                  if (widget.type == 'languages') {
+                    _name = value;
+                  } else {
+                    _title = value;
+                  }
+                },
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Campo obrigatório';
+                  }
+                  return null;
+                },
+              ),
+              if (widget.type == 'lessons')
+                DropdownButtonFormField<int>(
+                  decoration: InputDecoration(labelText: 'Idioma'),
+                  items: [1, 2] // Exemplo de idiomas disponíveis
+                      .map((id) => DropdownMenuItem<int>(
+                            value: id,
+                            child: Text(id == 1 ? 'Inglês' : 'Espanhol'),
+                          ))
+                      .toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      _languageId = value!;
+                    });
+                  },
+                ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState?.validate() ?? false) {
+                      if (widget.type == 'languages') {
+                        ApiService().addLanguage(Language(id: 0, name: _name));
+                      } else {
+                        ApiService().addLesson(Lesson(id: 0, title: _title, languageId: _languageId));
+                      }
+                      Navigator.pop(context);
+                    }
+                  },
+                  child: Text('Salvar'),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

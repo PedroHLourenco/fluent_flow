@@ -54,7 +54,7 @@ void main() {
           .thenAnswer(
               (_) async => http.Response('{"id": 3, "name": "Francês"}', 201));
 
-      await apiService.addLanguage('Francês');
+      await apiService.addLanguage('Francês' as Language);
 
       verify(() => mockHttpClient.post(
             Uri.parse('http://localhost:3000/languages'),
@@ -72,7 +72,7 @@ void main() {
           .thenAnswer(
               (_) async => http.Response('Failed to add language', 500));
 
-      expect(() => apiService.addLanguage('Francês'), throwsException);
+      expect(() => apiService.addLanguage('Francês' as Language), throwsException);
     });
 
     test('should return a list of lessons when the response is successful',

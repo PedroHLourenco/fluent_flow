@@ -1,5 +1,5 @@
 class Lesson {
-  final int id;
+  late final int id;
   final String title;
   final int languageId;
 
@@ -7,7 +7,7 @@ class Lesson {
 
   factory Lesson.fromJson(Map<String, dynamic> json) {
     return Lesson(
-      id: int.parse(json['id'].toString()),
+      id: json['id'],
       title: json['title'],
       languageId: json['languageId'],
     );

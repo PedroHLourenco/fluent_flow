@@ -14,7 +14,6 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Card principal com botões
             Card(
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
               elevation: 8,
@@ -28,7 +27,7 @@ class HomeScreen extends StatelessWidget {
                         Navigator.pushNamed(context, '/languages');
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.indigo, // Azul claro
+                        backgroundColor: Colors.indigo,
                         padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 40),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
                         textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
@@ -41,7 +40,7 @@ class HomeScreen extends StatelessWidget {
                         Navigator.pushNamed(context, '/lessons');
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blueAccent, // Azul claro
+                        backgroundColor: Colors.blueAccent,
                         padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 40),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
                         textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
@@ -54,6 +53,30 @@ class HomeScreen extends StatelessWidget {
             ),
           ],
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: 0,
+        onTap: (index) {
+          if (index == 0) {
+            Navigator.pushNamed(context, '/languages');
+          } else if (index == 1) {
+            Navigator.pushNamed(context, '/lessons');
+          }
+        },
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.language),
+            label: 'Idiomas',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.book),
+            label: 'Lições',
+          ),
+        ],
       ),
     );
   }

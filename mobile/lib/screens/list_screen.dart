@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import '../models/language.dart';
+import '../models/lesson.dart';
 import '../services/api_service.dart';
+import '../widgets/language_tile.dart';
+import '../widgets/lesson_tile.dart';
 
 class ListScreen extends StatelessWidget {
   final String type;
@@ -33,29 +36,22 @@ class ListScreen extends StatelessWidget {
               itemBuilder: (context, index) {
                 if (type == 'languages') {
                   final language = items[index] as Language;
-                  return Card(
-                    margin: const EdgeInsets.symmetric(vertical: 8),
-                    elevation: 4,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                    child: ListTile(
-                      contentPadding: const EdgeInsets.all(16),
-                      title: Text(language.name, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                      leading: const Icon(Icons.language, color: Colors.indigo),
-                      onTap: () {},
-                    ),
+                  return LanguageTile(
+                    language: language,
+                    onTap: () {
+                      Navigator.pushNamed(
+                        context,
+                        '/lessons', // Navegação para as lições
+                      );
+                    },
                   );
                 } else {
-                  final lesson = items[index];
-                  return Card(
-                    margin: const EdgeInsets.symmetric(vertical: 8),
-                    elevation: 4,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                    child: ListTile(
-                      contentPadding: const EdgeInsets.all(16),
-                      title: Text(lesson.title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                      leading: const Icon(Icons.book, color: Colors.blueAccent),
-                      onTap: () {},
-                    ),
+                  final lesson = items[index] as Lesson;
+                  return LessonTile(
+                    lesson: lesson,
+                    onTap: () {
+                      // Navegação para detalhes de lição, se necessário
+                    },
                   );
                 }
               },
