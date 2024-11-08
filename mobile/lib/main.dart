@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'screens/list_screen.dart';
 import 'screens/form_screen.dart';
 import 'screens/home_screen.dart';
-
 void main() {
   runApp(const MyApp());
 }
@@ -15,9 +14,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'App de Ensino de Idiomas',
       theme: ThemeData(
-        primarySwatch: Colors.blueGrey, // Cor mais sofisticada e neutra
+        primarySwatch: Colors.blueGrey,
         hintColor: Colors
-            .orangeAccent, // Cor de destaque para botões e elementos interativos
+            .orangeAccent,
         visualDensity: VisualDensity.adaptivePlatformDensity,
         textTheme: const TextTheme(
           displayLarge: TextStyle(
@@ -26,10 +25,10 @@ class MyApp extends StatelessWidget {
               fontSize: 24, fontWeight: FontWeight.w600, color: Colors.black87),
           bodyLarge: TextStyle(fontSize: 16, color: Colors.black87),
         ),
-        scaffoldBackgroundColor: Colors.white, // Fundo branco para leveza
+        scaffoldBackgroundColor: Colors.white,
         inputDecorationTheme: InputDecorationTheme(
           filled: true,
-          fillColor: Colors.grey[200], // Cor mais clara para campos de texto
+          fillColor: Colors.grey[200],
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(16),
             borderSide: BorderSide.none,
@@ -38,7 +37,7 @@ class MyApp extends StatelessWidget {
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.blueGrey, // Cor de fundo de botão
+            backgroundColor: Colors.blueGrey,
             padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 40),
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
@@ -46,7 +45,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
         appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.blueGrey, // Cor da AppBar
+          backgroundColor: Colors.blueGrey,
           elevation: 4,
           titleTextStyle: TextStyle(
               color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold),
