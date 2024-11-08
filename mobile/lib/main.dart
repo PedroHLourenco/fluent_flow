@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'screens/list_screen.dart';
 import 'screens/form_screen.dart';
 import 'screens/home_screen.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -15,8 +16,7 @@ class MyApp extends StatelessWidget {
       title: 'App de Ensino de Idiomas',
       theme: ThemeData(
         primarySwatch: Colors.blueGrey,
-        hintColor: Colors
-            .orangeAccent,
+        hintColor: Colors.orangeAccent,
         visualDensity: VisualDensity.adaptivePlatformDensity,
         textTheme: const TextTheme(
           displayLarge: TextStyle(
@@ -33,7 +33,8 @@ class MyApp extends StatelessWidget {
             borderRadius: BorderRadius.circular(16),
             borderSide: BorderSide.none,
           ),
-          contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
@@ -41,7 +42,8 @@ class MyApp extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 40),
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-            textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            textStyle:
+                const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
         ),
         appBarTheme: const AppBarTheme(
@@ -55,7 +57,6 @@ class MyApp extends StatelessWidget {
       routes: {
         '/languages': (context) => const ListScreen(type: 'languages'),
         '/lessons': (context) => const ListScreen(type: 'lessons'),
-        '/add': (context) => const FormScreen(type: 'languages'),
       },
     );
   }

@@ -7,7 +7,7 @@ class Lesson {
 
   factory Lesson.fromJson(Map<String, dynamic> json) {
     return Lesson(
-      id: json['id'],
+      id: int.parse(json['id'].toString()),
       title: json['title'],
       languageId: json['languageId'],
     );

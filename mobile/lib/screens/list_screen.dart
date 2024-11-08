@@ -16,7 +16,7 @@ class ListScreen extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: FutureBuilder<List<dynamic>>(
-          future: type == 'languages' ? ApiService().fetchLanguages() : ApiService().fetchLessons(),
+          future: type == 'languages' ? ApiService().getLanguages() : ApiService().getLessons(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
