@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  int _currentIndex = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -55,25 +62,30 @@ class HomeScreen extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 0,
+        currentIndex: _currentIndex,
         onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
           if (index == 0) {
             Navigator.pushNamed(context, '/languages');
           } else if (index == 1) {
+            // Já está na Home, então não faz nada
+          } else if (index == 2) {
             Navigator.pushNamed(context, '/lessons');
           }
         },
-        items: const [
+        items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.language),
+            icon: Icon(Icons.language, color: _currentIndex == 0 ? Colors.blueAccent : Colors.grey),
             label: 'Idiomas',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: Icon(Icons.home, color: _currentIndex == 1 ? Colors.blueAccent : Colors.grey),
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.book),
+            icon: Icon(Icons.book, color: _currentIndex == 2 ? Colors.blueAccent : Colors.grey),
             label: 'Lições',
           ),
         ],

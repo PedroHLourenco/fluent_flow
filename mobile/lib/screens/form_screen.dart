@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import '../models/language.dart';
-import '../models/lesson.dart';
-import '../services/api_service.dart';
 
 class FormScreen extends StatefulWidget {
   final String type;
@@ -13,74 +10,59 @@ class FormScreen extends StatefulWidget {
 }
 
 class _FormScreenState extends State<FormScreen> {
-  final _formKey = GlobalKey<FormState>();
-  late String _name;
-  late String _title;
-  late int _languageId;
+  late int _currentIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    _currentIndex = widget.type == 'languages' ? 0 : 2;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.type == 'languages' ? 'Adicionar Idioma' : 'Adicionar Lição'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TextFormField(
-                decoration: InputDecoration(labelText: widget.type == 'languages' ? 'Nome do Idioma' : 'Título da Lição'),
-                onChanged: (value) {
-                  if (widget.type == 'languages') {
-                    _name = value;
-                  } else {
-                    _title = value;
-                  }
-                },
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Campo obrigatório';
-                  }
-                  return null;
-                },
-              ),
-              if (widget.type == 'lessons')
-                DropdownButtonFormField<int>(
-                  decoration: InputDecoration(labelText: 'Idioma'),
-                  items: [1, 2] // Exemplo de idiomas disponíveis
-                      .map((id) => DropdownMenuItem<int>(
-                            value: id,
-                            child: Text(id == 1 ? 'Inglês' : 'Espanhol'),
-                          ))
-                      .toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      _languageId = value!;
-                    });
-                  },
-                ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16.0),
-                child: ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState?.validate() ?? false) {
-                      if (widget.type == 'languages') {
-                        ApiService().addLanguage(Language(id: 0, name: _name));
-                      } else {
-                        ApiService().addLesson(Lesson(id: 0, title: _title, languageId: _languageId));
-                      }
-                      Navigator.pop(context);
-                    }
-                  },
-                  child: Text('Salvar'),
-                ),
-              ),
-            ],
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.home),
+            onPressed: () {
+              Navigator.pushNamed(context, '/');
+            },
           ),
-        ),
+        ],
+      ),
+      body: Center(
+        child: Text(widget.type == 'languages' ? 'Formulário de Idiomas' : 'Formulário de Lições'),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+          if (index == 0) {
+            Navigator.pushNamed(context, '/languages');
+          } else if (index == 1) {
+            Navigator.pushNamed(context, '/');
+          } else if (index == 2) {
+            Navigator.pushNamed(context, '/lessons');
+          }
+        },
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.language, color: _currentIndex == 0 ? Colors.blueAccent : Colors.grey),
+            label: 'Idiomas',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home, color: _currentIndex == 1 ? Colors.blueAccent : Colors.grey),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.book, color: _currentIndex == 2 ? Colors.blueAccent : Colors.grey),
+            label: 'Lições',
+          ),
+        ],
       ),
     );
   }
