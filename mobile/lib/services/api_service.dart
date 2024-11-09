@@ -8,7 +8,6 @@ class ApiService {
 
   Future<List<Language>> getLanguages() async {
     final response = await http.get(Uri.parse('$baseUrl/languages'));
-
     if (response.statusCode == 200) {
       final List<dynamic> data = json.decode(response.body);
       return data.map((item) => Language.fromJson(item)).toList();
@@ -17,14 +16,12 @@ class ApiService {
     }
   }
 
-  Future<List<Lesson>> getLessons() async {
-    final response = await http.get(Uri.parse('$baseUrl/lessons'));
-
+  Future<Language> getLanguageById(int id) async {
+    final response = await http.get(Uri.parse('$baseUrl/languages/$id'));
     if (response.statusCode == 200) {
-      final List<dynamic> data = json.decode(response.body);
-      return data.map((item) => Lesson.fromJson(item)).toList();
+      return Language.fromJson(json.decode(response.body));
     } else {
-      throw Exception('Falha ao carregar lições');
+      throw Exception('Falha ao carregar idioma');
     }
   }
 
@@ -34,12 +31,39 @@ class ApiService {
       headers: {'Content-Type': 'application/json'},
       body: json.encode({'name': language.name}),
     );
+    if (response.statusCode != 201) throw Exception('Falha ao adicionar idioma');
+  }
 
-    if (response.statusCode == 201) {
-      final data = json.decode(response.body);
-      language.id = data['id'];
+  Future<void> updateLanguage(Language language) async {
+    final response = await http.put(
+      Uri.parse('$baseUrl/languages/${language.id}'),
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode({'name': language.name}),
+    );
+    if (response.statusCode != 200) throw Exception('Falha ao atualizar idioma');
+  }
+
+  Future<void> deleteLanguage(int id) async {
+    final response = await http.delete(Uri.parse('$baseUrl/languages/$id'));
+    if (response.statusCode != 200) throw Exception('Falha ao deletar idioma');
+  }
+
+  Future<List<Lesson>> getLessons() async {
+    final response = await http.get(Uri.parse('$baseUrl/lessons'));
+    if (response.statusCode == 200) {
+      final List<dynamic> data = json.decode(response.body);
+      return data.map((item) => Lesson.fromJson(item)).toList();
     } else {
-      throw Exception('Falha ao adicionar idioma');
+      throw Exception('Falha ao carregar lições');
+    }
+  }
+
+  Future<Lesson> getLessonById(int id) async {
+    final response = await http.get(Uri.parse('$baseUrl/lessons/$id'));
+    if (response.statusCode == 200) {
+      return Lesson.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Falha ao carregar lição');
     }
   }
 
@@ -49,25 +73,7 @@ class ApiService {
       headers: {'Content-Type': 'application/json'},
       body: json.encode({'title': lesson.title, 'languageId': lesson.languageId}),
     );
-
-    if (response.statusCode == 201) {
-      final data = json.decode(response.body);
-      lesson.id = data['id'];
-    } else {
-      throw Exception('Falha ao adicionar lição');
-    }
-  }
-
-  Future<void> updateLanguage(Language language) async {
-    final response = await http.put(
-      Uri.parse('$baseUrl/languages/${language.id}'),
-      headers: {'Content-Type': 'application/json'},
-      body: json.encode({'name': language.name}),
-    );
-
-    if (response.statusCode != 200) {
-      throw Exception('Falha ao atualizar idioma');
-    }
+    if (response.statusCode != 201) throw Exception('Falha ao adicionar lição');
   }
 
   Future<void> updateLesson(Lesson lesson) async {
@@ -76,31 +82,11 @@ class ApiService {
       headers: {'Content-Type': 'application/json'},
       body: json.encode({'title': lesson.title, 'languageId': lesson.languageId}),
     );
-
-    if (response.statusCode != 200) {
-      throw Exception('Falha ao atualizar lição');
-    }
-  }
-
-  Future<void> deleteLanguage(int id) async {
-    final response = await http.delete(
-      Uri.parse('$baseUrl/languages/$id'),
-      headers: {'Content-Type': 'application/json'},
-    );
-
-    if (response.statusCode != 200) {
-      throw Exception('Falha ao deletar idioma');
-    }
+    if (response.statusCode != 200) throw Exception('Falha ao atualizar lição');
   }
 
   Future<void> deleteLesson(int id) async {
-    final response = await http.delete(
-      Uri.parse('$baseUrl/lessons/$id'),
-      headers: {'Content-Type': 'application/json'},
-    );
-
-    if (response.statusCode != 200) {
-      throw Exception('Falha ao deletar lição');
-    }
+    final response = await http.delete(Uri.parse('$baseUrl/lessons/$id'));
+    if (response.statusCode != 200) throw Exception('Falha ao deletar lição');
   }
 }

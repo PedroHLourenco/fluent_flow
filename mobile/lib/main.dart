@@ -11,15 +11,17 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Idiomas e Lições',
-      theme: ThemeData(primarySwatch: Colors.blue),
+      title: 'Language Learning App',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
       initialRoute: '/',
       routes: {
-        '/': (context) => const HomeScreen(),
-        '/languages': (context) => const ListScreen(type: 'languages'),
-        '/lessons': (context) => const ListScreen(type: 'lessons'),
-        '/add/languages': (context) => const FormScreen(type: 'languages'),
-        '/add/lessons': (context) => const FormScreen(type: 'lessons'),
+        '/': (context) => HomeScreen(),
+        '/languages': (context) => ListScreen(type: 'languages'),
+        '/lessons': (context) => ListScreen(type: 'lessons'),
+        '/add/languages': (context) => FormScreen(type: 'languages'),
+        '/add/lessons': (context) => FormScreen(type: 'lessons'),
       },
     );
   }
