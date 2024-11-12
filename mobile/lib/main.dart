@@ -11,11 +11,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Language Learning App',
+      title: 'FluentFlow',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/',
       routes: {
         '/': (context) => HomeScreen(),
         '/languages': (context) => ListScreen(type: 'languages'),

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'home_screen.dart';
+import 'list_screen.dart';
 
 class FormScreen extends StatefulWidget {
   final String type;
@@ -16,7 +18,8 @@ class _FormScreenState extends State<FormScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add ${widget.type}'),
+        title: Text('FluentFlow', textAlign: TextAlign.center),
+        backgroundColor: Colors.blue,
       ),
       body: Center(
         child: Text('Form to add a new ${widget.type} will be here.'),
@@ -32,7 +35,8 @@ class _FormScreenState extends State<FormScreen> {
             Navigator.pushReplacementNamed(context, '/');
           } else if (index == 1) {
             Navigator.pushReplacementNamed(context, '/languages');
-          } else if (index == 2) {}
+          } else if (index == 2) {
+          }
         },
         backgroundColor: Colors.blue,
         selectedItemColor: Colors.white,

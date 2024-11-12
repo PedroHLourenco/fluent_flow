@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'list_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -12,10 +13,51 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Home'),
+        title: Center(
+          child: Text(
+            'FluentFlow',
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+        backgroundColor: Colors.blue,
+        automaticallyImplyLeading: false,
       ),
-      body: Center(
-        child: Text('Welcome to the Language Learning App!'),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Card(
+              color: Colors.blue[100],
+              child: ListTile(
+                title: Center(
+                  child: Text(
+                    'Idiomas Matriculados',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                onTap: () {
+                  Navigator.pushReplacementNamed(context, '/languages');
+                },
+              ),
+            ),
+            SizedBox(height: 20),
+            Card(
+              color: Colors.blue[100],
+              child: ListTile(
+                title: Center(
+                  child: Text(
+                    'Lições Iniciadas',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                onTap: () {
+                  Navigator.pushReplacementNamed(context, '/lessons');
+                },
+              ),
+            ),
+          ],
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,

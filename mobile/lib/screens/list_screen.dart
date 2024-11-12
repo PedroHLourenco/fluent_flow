@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import '../models/language.dart';
+import '../models/lesson.dart';
+import 'form_screen.dart';
 
 class ListScreen extends StatefulWidget {
   final String type;
-
   ListScreen({required this.type});
 
   @override
@@ -10,29 +12,63 @@ class ListScreen extends StatefulWidget {
 }
 
 class _ListScreenState extends State<ListScreen> {
-  int _currentIndex = 1;
+  List<Language> languages = [
+    Language(id: 1, name: 'Inglês'),
+    Language(id: 2, name: 'Espanhol'),
+  ];
+
+  List<Lesson> lessons = [
+    Lesson(id: 1, title: 'Saudações em Inglês', languageId: 1),
+    Lesson(id: 2, title: 'Frases comuns em Espanhol', languageId: 2),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('List of ${widget.type}'),
+        title: Center(
+          child: Text(
+            widget.type == 'languages' ? 'Idiomas Matriculados' : 'Lições Iniciadas',
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+        backgroundColor: Colors.blue,
+        automaticallyImplyLeading: false,
       ),
-      body: Center(
-        child: Text('List of ${widget.type} will be here.'),
+      body: ListView.builder(
+        itemCount: widget.type == 'languages' ? languages.length : lessons.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            title: Text(widget.type == 'languages'
+                ? languages[index].name
+                : lessons[index].title),
+          );
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => FormScreen(type: widget.type),
+            ),
+          );
+        },
+        backgroundColor: Colors.blue,
+        child: Text(
+          widget.type == 'languages' ? 'Novo idioma' : 'Nova lição',
+          style: TextStyle(color: Colors.white),
+          textAlign: TextAlign.center,
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
+        currentIndex: widget.type == 'languages' ? 1 : 2,
         onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-
           if (index == 0) {
             Navigator.pushReplacementNamed(context, '/');
-          } else if (index == 1) {
+          } else if (index == 1 && widget.type != 'languages') {
             Navigator.pushReplacementNamed(context, '/languages');
-          } else if (index == 2) {
+          } else if (index == 2 && widget.type != 'lessons') {
             Navigator.pushReplacementNamed(context, '/lessons');
           }
         },
