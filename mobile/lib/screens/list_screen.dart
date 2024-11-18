@@ -1,80 +1,84 @@
 import 'package:flutter/material.dart';
 import '../models/language.dart';
 import '../models/lesson.dart';
-import 'form_screen.dart';
 
-class ListScreen extends StatefulWidget {
+class ListScreen extends StatelessWidget {
   final String type;
-  ListScreen({required this.type});
 
-  @override
-  _ListScreenState createState() => _ListScreenState();
-}
-
-class _ListScreenState extends State<ListScreen> {
-  List<Language> languages = [
-    Language(id: 1, name: 'Inglês'),
-    Language(id: 2, name: 'Espanhol'),
-  ];
-
-  List<Lesson> lessons = [
-    Lesson(id: 1, title: 'Saudações em Inglês', languageId: 1),
-    Lesson(id: 2, title: 'Frases comuns em Espanhol', languageId: 2),
-  ];
+  const ListScreen({required this.type});
 
   @override
   Widget build(BuildContext context) {
+    final arguments = ModalRoute.of(context)?.settings.arguments;
+    final int? languageId = arguments is int ? arguments : null;
+
+    final List items = type == 'languages'
+        ? [
+            Language(id: 1, name: 'Inglês'),
+            Language(id: 2, name: 'Espanhol'),
+          ]
+        : [
+            Lesson(id: 1, title: 'Saudações em Inglês', languageId: 1),
+            Lesson(id: 2, title: 'Frases comuns em Espanhol', languageId: 2),
+          ].where((lesson) => lesson.languageId == languageId).toList();
+
     return Scaffold(
       appBar: AppBar(
-        title: Center(
-          child: Text(
-            widget.type == 'languages' ? 'Idiomas Matriculados' : 'Lições Iniciadas',
-            style: TextStyle(color: Colors.white),
-          ),
+        title: const Text(
+          'FluentFlow',
+          style: TextStyle(color: Colors.white),
         ),
         backgroundColor: Colors.blue,
+        centerTitle: true,
         automaticallyImplyLeading: false,
       ),
       body: ListView.builder(
-        itemCount: widget.type == 'languages' ? languages.length : lessons.length,
+        itemCount: items.length,
         itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(widget.type == 'languages'
-                ? languages[index].name
-                : lessons[index].title),
-          );
+          if (type == 'languages') {
+            final Language item = items[index];
+            return ListTile(
+              title: Text(item.name),
+              onTap: () {
+                Navigator.pushNamed(
+                  context,
+                  '/lessons',
+                  arguments: item.id,
+                );
+              },
+            );
+          } else {
+            final Lesson item = items[index];
+            return ListTile(
+              title: Text(item.title),
+            );
+          }
         },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(
+          Navigator.pushNamed(
             context,
-            MaterialPageRoute(
-              builder: (context) => FormScreen(type: widget.type),
-            ),
+            type == 'languages' ? '/add/languages' : '/add/lessons',
           );
         },
+        child: const Icon(Icons.add),
         backgroundColor: Colors.blue,
-        child: Text(
-          widget.type == 'languages' ? 'Novo idioma' : 'Nova lição',
-          style: TextStyle(color: Colors.white),
-          textAlign: TextAlign.center,
-        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: widget.type == 'languages' ? 1 : 2,
+        currentIndex: type == 'languages' ? 1 : 2,
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.grey,
+        backgroundColor: Colors.blue,
         onTap: (index) {
           if (index == 0) {
             Navigator.pushReplacementNamed(context, '/');
-          } else if (index == 1 && widget.type != 'languages') {
+          } else if (index == 1 && type != 'languages') {
             Navigator.pushReplacementNamed(context, '/languages');
-          } else if (index == 2 && widget.type != 'lessons') {
+          } else if (index == 2 && type != 'lessons') {
             Navigator.pushReplacementNamed(context, '/lessons');
           }
         },
-        backgroundColor: Colors.blue,
-        selectedItemColor: Colors.white,
-        unselectedItemColor: Colors.white70,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
@@ -82,11 +86,11 @@ class _ListScreenState extends State<ListScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.language),
-            label: 'Languages',
+            label: 'Idiomas',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.book),
-            label: 'Lessons',
+            label: 'Lições',
           ),
         ],
       ),

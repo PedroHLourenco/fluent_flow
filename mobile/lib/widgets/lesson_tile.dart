@@ -5,7 +5,7 @@ class LessonTile extends StatelessWidget {
   final Lesson lesson;
   final VoidCallback onTap;
 
-  const LessonTile({super.key, required this.lesson, required this.onTap});
+  const LessonTile(Lesson lesson, {super.key, required this.lesson, required this.onTap});
 
   @override
   Widget build(BuildContext context) {

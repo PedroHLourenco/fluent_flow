@@ -5,7 +5,7 @@ class LanguageTile extends StatelessWidget {
   final Language language;
   final VoidCallback onTap;
 
-  const LanguageTile({super.key, required this.language, required this.onTap});
+  const LanguageTile(Language language, {super.key, required this.language, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
